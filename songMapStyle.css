@@ -1,0 +1,125 @@
+body{
+    background: black;
+    color: white;
+    font-family: sans-serif;
+}
+
+div{
+    font-size: 16pt;
+}
+
+img{
+    width: 100%;
+    filter: invert(0);
+}
+
+.center{
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+sup{
+    background: green;
+}
+
+h1{
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+h2{
+    margin-bottom: 3px;
+    margin-top: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.drums{
+    background: red;
+    color:black;
+}
+
+.hats{
+    background: yellow;
+    color: black;
+}
+
+.chords{
+    background: green;
+}
+
+.bass{
+    background: purple;
+}
+
+.synth{
+    background: blue;
+}
+
+.synth-mute{
+    background: repeating-linear-gradient(
+        45deg,
+        lightblue,
+        lightblue 10px,
+        white 10px,
+        white 20px
+    );
+    color: black;
+}
+.drums-mute{
+    background: repeating-linear-gradient(
+        45deg,
+        pink,
+        pink 10px,
+        white 0px,
+        white 20px
+    );
+    color: black;
+}
+
+.hats-mute{
+    background: repeating-linear-gradient(
+        45deg,
+        yellow,
+        yellow 10px,
+        white 0px,
+        white 20px
+    );
+    color: black;
+}
+
+.chords-mute{
+    background: repeating-linear-gradient(
+        45deg,
+        lightgreen,
+        lightgreen 10px,
+        white 0px,
+        white 20px
+    );
+    color: black;
+}
+
+.bass-mute{
+    background: repeating-linear-gradient(
+        45deg,
+        violet,
+        violet 10px,
+        white 0px,
+        white 20px
+    );
+    color: black;
+}
+
+h2 span{
+    border-style: solid;
+    border-color: white;
+    width: 20vw;
+    text-align: center;
+}
+
+h2{
+    border-style: solid;
+    border-color: white;
+}
