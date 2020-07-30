@@ -2,13 +2,20 @@ from selenium import webdriver
 import time
 import sys
 import os
+import tkinter as tk
+from tkinter import simpledialog
 
 if len(sys.argv) == 3:
     artist = sys.argv[1]
     album = sys.argv[2]
 else:
-    artist = "Nada-surf"
-    album = "let-go"
+    root = tk.Tk()
+    root.withdraw()        
+
+    artist = simpledialog.askstring("tk", "Enter Artist Name")
+    album = simpledialog.askstring("tk", "Enter Album Name")
+    artist = artist.replace(" ", "-")
+    album = album.replace(" ", "-")
 
 ## TODO: santaize inputs
     
@@ -47,7 +54,7 @@ trackDict = {}
 for link in allLinks:
     linkText = link.text
     if "Lyrics" in linkText:
-        for char in ["'","?","(",")","❦"," Lyrics"]: #TODO: Sanitize input without micromanaging 
+        for char in ["'","?","(",")","❦"," Lyrics",".",'/']: #TODO: Sanitize input without micromanaging 
             linkText = linkText.replace(char, "")
 
         trackDict[linkText] = link.get_attribute("href")

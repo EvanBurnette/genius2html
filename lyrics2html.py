@@ -1,5 +1,7 @@
 import os
 import sys
+import tkinter as tk
+from tkinter import filedialog
 
 def Lyrics2html(filename, trackNumber, artist, album, prevSong, nextSong):
 
@@ -52,16 +54,23 @@ def trackList2html(tracks, artist, album):
         trackListHTML.write('''<a href="''' + track + '''.html">''' + track + '''</a><br>''')
     trackListHTML.write("</body></html>")
     trackListHTML.close()
-        
 
-albumDir = sys.argv[1]
+if len(sys.argv) < 2:
+    root = tk.Tk()
+
+    root.withdraw()
+
+    albumDir = filedialog.askdirectory()
+
+    print(albumDir)
+elif len(sys.argv) == 2:
+    albumDir = sys.argv[1]
 os.chdir(albumDir)
 
 workingDir = os.getcwd().split('\\')
-print(workingDir)
 artist = workingDir[-2]
 album = workingDir[-1]    
-    
+
 trackFile = open("trackList.txt", mode='r')
 tracks = trackFile.read().split("\n")
 trackFile.close()
