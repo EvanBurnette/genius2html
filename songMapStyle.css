@@ -119,7 +119,8 @@ h2 span{
     text-align: center;
 }
 
-h2{
-    border-style: solid;
-    border-color: white;
+.bottom-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

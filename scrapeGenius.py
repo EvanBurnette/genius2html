@@ -1,6 +1,5 @@
 from selenium import webdriver
 import time
-import pyautogui
 import sys
 import os
 
@@ -31,46 +30,53 @@ os.chdir(album)
 ##Search for album on Genius based on Genius.com organization
 ##https://genius.com/albums/Johanna-warren/Numun
 
-browser = webdriver.Firefox()
+profile = webdriver.FirefoxProfile()
+profile.set_preference("javascript.enabled", False);
+browser = webdriver.Firefox(profile)
+
 albumFormat = "http://genius.com/albums" + "/" + artist + "/" + album
 print(albumFormat)
 browser.get(albumFormat)
 
 ##TODO: Click through each link in album tracklist page on Genius.com
 
-elements = browser.find_elements_by_tag_name('a')
+allLinks = browser.find_elements_by_tag_name('a')
 
-i = 0
+trackDict = {}
 
-trackList = []
+for link in allLinks:
+    linkText = link.text
+    if "Lyrics" in linkText:
+        for char in ["'","?","(",")","❦"," Lyrics"]: #TODO: Sanitize input without micromanaging 
+            linkText = linkText.replace(char, "")
 
-for element in elements:
-    if "Lyrics" in element.text:
-        trackList.append(element.text)
+        trackDict[linkText] = link.get_attribute("href")
     else:
         pass
 
-print(trackList)
-trackListFile = open("trackList.txt", 'w')
-for track in trackList:
-    for char in ["'","?","(",")","❦"]: #TODO: combine w below
-        track = track.replace(char, "")
-    if track == trackList[-1]:
-        trackListFile.write(track)
-    else:
-        trackListFile.write(track + '\n')
+print(trackDict)
+trackListFile = open("trackList.txt", "w")
+
+newline = ''
+
+for track in trackDict:
+    trackListFile.write(newline + track)
+    newline = "\n"
+    
 trackListFile.close()
 
-for track in trackList:
-    print(track)
-    for char in ["'","?","(",")","❦"]:
-        track = track.replace(char, "")
-    filteredTrack = track.strip().replace(" ","-").replace("&","and").lower()
-    browser.get("http://genius.com/" + artist + "-" + filteredTrack)
-    time.sleep(1) #TODO: see if we can detect when page load is complete
-    lyrics = browser.find_element_by_tag_name('p')
+for track in trackDict:
+    print(trackDict[track])
+    browser.get(trackDict[track])
+    #TODO: See if we can detect when page load is complete
+    time.sleep(5)
+    try:
+        lyrics = browser.find_element_by_tag_name("p")
+    except:
+        print("Failed to scrape " + track)
+        pass
     ##Save lyrics text content to a text file
-    newFile = open(track + ".txt", mode='w')
+    newFile = open(track + ".txt", mode="w")
     newFile.write(lyrics.text)
     newFile.close()
     
