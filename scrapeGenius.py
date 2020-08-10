@@ -5,6 +5,9 @@ import os
 import tkinter as tk
 from tkinter import simpledialog
 
+def noUTF(text):
+    return ''.join(char for char in text if ord(char) in range(0,127))
+
 if len(sys.argv) == 3:
     artist = sys.argv[1]
     album = sys.argv[2]
@@ -17,7 +20,7 @@ else:
     artist = artist.replace(" ", "-")
     album = album.replace(" ", "-")
 
-## TODO: santaize inputs
+## TODO: sanitize inputs
     
 ##Create folders for Artist and album and change directory into those folders
 try:
@@ -35,7 +38,7 @@ except:
 os.chdir(album)
 
 ##Search for album on Genius based on Genius.com organization
-##https://genius.com/albums/Johanna-warren/Numun
+##example: https://genius.com/albums/Johanna-warren/Numun
 
 profile = webdriver.FirefoxProfile()
 profile.set_preference("javascript.enabled", False);
@@ -54,9 +57,10 @@ trackDict = {}
 for link in allLinks:
     linkText = link.text
     if "Lyrics" in linkText:
-        for char in ["'","?","(",")","❦"," Lyrics",".",'/']: #TODO: Sanitize input without micromanaging 
-            linkText = linkText.replace(char, "")
-
+        for char in ['>','<',':','"','/','\\','|','?','*','(',')','Lyrics']:
+            linkText = linkText.replace(char,'')
+        linkText = linkText.replace('&', 'and')
+        linkText = noUTF(linkText).strip(' ')
         trackDict[linkText] = link.get_attribute("href")
     else:
         pass
@@ -83,8 +87,8 @@ for track in trackDict:
         print("Failed to scrape " + track)
         pass
     ##Save lyrics text content to a text file
-    newFile = open(track + ".txt", mode="w")
-    newFile.write(lyrics.text)
+    newFile = open(track + ".txt", mode="w", encoding="utf-8")
+    newFile.write(lyrics.text.replace('\u2766',''))
     newFile.close()
     
 browser.quit()
