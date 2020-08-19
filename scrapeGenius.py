@@ -41,7 +41,7 @@ os.chdir(album)
 ##example: https://genius.com/albums/Johanna-warren/Numun
 
 profile = webdriver.FirefoxProfile()
-profile.set_preference("javascript.enabled", False);
+profile.set_preference("javascript.enabled", False)
 browser = webdriver.Firefox(profile)
 
 albumFormat = "http://genius.com/albums" + "/" + artist + "/" + album
